@@ -12,14 +12,14 @@ int count_words(char *line, char sep)
     int count_words = 0;
     int start_word = 1;
 
-    while (line[i] != 0)
+    while (line[i] != '\0')
     {
-        if (start_word == 1)
+        if (line[i]!= sep && start_word == 1)
         {
             count_words++;
             start_word = 0;
         }
-        if (line[i] == sep)
+        if (line[i] == sep && line[i]!= 0)
         {
             start_word = 1;
         }
@@ -58,34 +58,35 @@ char **get_array_words(char *line, char sep)
 
     while (line[cursor] != '\0')
     {   
-        if (line[cursor] == sep)
+        while (line[cursor] == sep)
         {
             cursor++;
-        } 
-        nletters = count_letters(&line[cursor], ' ');
-        word = malloc(sizeof(char) * (nletters + 1));
-        printf("number of the word %d\n", nletters);
-        i = 0;
-        while (i < nletters)
-        {
-            word[i] = line[cursor + i];
-            i++;
         }
-        word[nletters] = '\0';
-        space_words[i_word] = word;
-        i_word++;
-        cursor = cursor + nletters + 1;
+        if (line[cursor] != 0)
+        {
+            nletters = count_letters(&line[cursor], ' ');
+            word = malloc(sizeof(char) * (nletters + 1));
+            printf("number of the word %d\n", nletters);
+            i = 0;
+            while (i < nletters)
+            {
+                word[i] = line[cursor + i];
+                i++;
+            }
+            word[nletters] = '\0';
+            space_words[i_word] = word;
+            i_word++;
+            cursor = cursor + nletters;
+        }
+
     }
     return space_words;
 }
 
 
-
-
-
 int main()
 {
-    char *mystr = "dddd frrrfr e2rew";
+    char *mystr = "   dddd  frrrfr e   2rew  ";
     int count = count_words(mystr, ' ');
     printf("count words : %d\n", count);
     char **res = get_array_words(mystr, ' ');
